@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.we{
+				width: 100px;
+				display: table;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">帮助</h1>
+		</header>
+		<div class="mui-content">
+		    <h1 style="font-size: 14px;">如果你想赞助我们的话，我们十分的高兴</h1>
+		    <p>首先你要点击赞助我们这个字样，点击后，会自动的进入支付宝页面，然后你可以选择性的支付(见下图)</p>
+		    <img src="img/b.jpg" class="we"/>
+		    
+		    <p>其次你支付完了后，要怎么返回页面呢？这里我们做了解决的方案</p>
+		    <p>1，一直点击返回到下面图片这个页面</p>
+		    <img src="img/a.jpg" class="we"/>
+		    <p>2，这个时候你不要点击返回按钮，我们这里做了右滑关闭的方法来退出这个页面，从而重新的进入下面这个页面</p>
+		    <img src="img/c.jpg" class="we"/>
+		    <p>3，最后，感谢各位的支付，我们会继续完善，敬请期待</p>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				var self=plus.webview.currentWebview();
+				self.drag({
+					direction:'right',
+					moveMode:'followFinger'
+				},{
+					
+				},function(){
+					mui.back();
+//					window.location.href='gerenzhongxing.html';
+				});
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+			})
+		</script>
+	</body>
+
+</html>

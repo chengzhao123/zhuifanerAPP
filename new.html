@@ -1,0 +1,348 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>new</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.aaa {
+				height: 78px;
+			}
+			
+			.mui-media-body {
+				position: absolute;
+				left: 115px;
+				top: 20px;
+			}
+			
+			img {
+				margin-left: 22px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 16px;
+				margin-top: 10px;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			
+			h1 {
+				font-size: 20px;
+				font-weight: bolder;
+				line-height: 35px;
+				top: 10px;
+				position: absolute;
+				display: block;
+				color: hotpink;
+			}
+			
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			
+			.t {
+				margin-top: 10px;
+				margin-left: 0px;
+			}
+			
+			#to {
+				text-align: center;
+				width: 100%;
+				font-size: 18px;
+				color: rgba(16, 16, 16, 1);
+				margin-top: -40px;
+			}
+			
+			.zi {
+				font-size: 18px;
+				;
+				color: rgba(16, 16, 16, 1);
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+			<div id="to">title</div>
+		</header>
+		<div class="mui-content  mui-scroll-wrapper" id="newlist">
+			<div class="mui-scroll">
+				<div class="mui-table-view" id="adf">
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: true, //启用右滑关闭功能,右滑有关闭最常用，所有有配置。
+				gestureConfig: {
+					swipe: true //监听滑动事件，默认是不监听的。
+				},
+				pullRefresh: {
+					container: '#newlist',
+					down: {
+						style: 'circle',
+						auto: true,
+						color: '#FFB6C1', //可选，默认“#2BD009” 下拉刷新控件颜色
+						callback: function() {
+							document.getElementById('adf').innerHTML = "";
+							shuaxin();
+							setTimeout(function(){
+							 mui("#newlist").pullRefresh().endPulldownToRefresh(true);
+							})
+						}
+					},
+					up:{
+						auto:false,
+						show:true,
+						contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+               			contentnomore:'没 有 更 多 数 据 了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+           				callback:function(){//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                			shangla();	
+                			
+          				}
+					}
+				}
+
+			});
+			
+			mui.plusReady(function() {
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				var self = plus.webview.currentWebview();
+				self.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {}, function() {
+					mui.back()
+				})
+				var dataid = self.deal;
+				document.getElementById('to').innerHTML = dataid;
+
+				mui('#adf').on('tap', '.mui-table-view-cell', function(e) {
+					var biaotiy = this.children[1].children[0].innerHTML;
+					var jishuya = this.children[1].children[1].innerHTML;
+					var tupianya = this.children[0].getAttribute('src');
+					var lin = this.children[1].getAttribute('title');
+					mui.openWindow({
+						url: 'dongmanxiemian.html',
+						id: 'dongmanxiemian.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							bt: biaotiy,
+							jis: jishuya,
+							tup: tupianya,
+							lin: lin
+						}
+					})
+				})
+			});
+
+			//下拉刷新
+			function shuaxin() {
+				var b = null;
+				var self = plus.webview.currentWebview();
+				var a = self.deal;
+				switch(a) {
+					case 'new':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2019':				
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2019%2C2020)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2018':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2018%2C2019)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2017':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2017%2C2018)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2016':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2016%2C2017)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2015':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2015%2C2016)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2014-2010':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2010%2C2015)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2009-2005':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2005%2C2010)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '2004-2000':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2000%2C2005)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '90年代':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1990%2C2000)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					case '80年代':
+						b = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1980%2C1990)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1";
+						break;
+					default:
+						break;
+				}
+				var adf = document.getElementById('adf');
+
+				mui.ajax({
+					url: b,
+					type: 'GET',
+					dataType: 'jsonp',
+					data: {},
+					timeout: 2000,
+					success: function(res) {
+						var da = JSON.parse(res).data.list;
+						for(var i = 0; i < da.length; i++) {
+							var table = document.createElement('div');
+							table.className = 'mui-table-view-cell';
+							//图片封面
+							var aw = document.createElement('img');
+							aw.src = da[i].cover;
+							aw.className = 'aaa mui-pull-left';
+							table.appendChild(aw);
+							//标题和集数的大框架
+							var medi = document.createElement('div');
+							medi.className = 'mui-media-body';
+							medi.title = da[i].link;
+							//标题
+							var pb = document.createElement('p');
+							pb.className = 'zi';
+							pb.innerHTML = da[i].title;
+							//集数
+							var pa = document.createElement('p');
+							pa.className = 'mui-ellipsis';
+							pa.innerHTML = da[i].index_show;
+							medi.appendChild(pb);
+							medi.appendChild(pa);
+							table.appendChild(medi);
+							adf.appendChild(table);
+						}
+						b == "";
+						mui.toast('加载成功')
+						setTimeout(function() {
+							
+							mui("#newlist").pullRefresh().endPulldownToRefresh(true);
+						}, 1500)
+					},
+					error: function() {
+						mui.toast("请求error");
+						mui("#newlist").pullRefresh().endPulldownToRefresh(true);
+						
+					}
+				})
+			}
+			//上拉加载
+			var count=1;
+			function shangla() {
+				count++;
+				var c = null;
+				var self = plus.webview.currentWebview();
+				var a = self.deal;
+				switch(a) {
+					case 'new':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2019':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2019%2C2020)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2018':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2018%2C2019)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2017':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2017%2C2018)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2016':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2016%2C2017)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2015':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2015%2C2016)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2014-2010':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2010%2C2015)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2009-2005':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2005%2C2010)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '2004-2000':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2000%2C2005)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '90年代':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1990%2C2000)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					case '80年代':
+						c = "https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1980%2C1990)&style_id=-1&order=3&st=1&sort=0&page="+count+"&season_type=1&pagesize=20&type=1";
+						break;
+					default:
+						break;
+				}
+				var adf = document.getElementById('adf');
+
+				mui.ajax({
+					url: c,
+					type: 'GET',
+					dataType: 'jsonp',
+					data: {},
+					timeout: 2000,
+					success: function(res) {
+						var da = JSON.parse(res).data.list;
+						for(var i = 0; i < da.length; i++) {
+							var table = document.createElement('div');
+							table.className = 'mui-table-view-cell';
+							//图片封面
+							var aw = document.createElement('img');
+							aw.src = da[i].cover;
+							aw.className = 'aaa mui-pull-left';
+							table.appendChild(aw);
+							//标题和集数的大框架
+							var medi = document.createElement('div');
+							medi.className = 'mui-media-body';
+							medi.title = da[i].link;
+							//标题
+							var pb = document.createElement('p');
+							pb.className = 'zi';
+							pb.innerHTML = da[i].title;
+							//集数
+							var pa = document.createElement('p');
+							pa.className = 'mui-ellipsis';
+							pa.innerHTML = da[i].index_show;
+							medi.appendChild(pb);
+							medi.appendChild(pa);
+							table.appendChild(medi);
+							adf.appendChild(table);
+						}
+						mui.toast("加载成功");
+						setTimeout(function() {
+							var c=false;
+							if(count>19){
+								c=true;
+							}
+							mui("#newlist").pullRefresh().endPullupToRefresh(c);
+						}, 1500)
+					},
+					error: function() {
+						mui.toast("请求error");
+							mui("#newlist").pullRefresh().endPullupToRefresh(true);
+					}
+				})
+			}
+		</script>
+	</body>
+
+</html>

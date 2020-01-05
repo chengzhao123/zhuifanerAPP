@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>fenlei</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">html body .mui-content {
+	background-color: white;
+	position: absolute;
+}
+
+.t {
+	position: relative;
+	margin-left: 16px;
+	font-size: 14px;
+	color: rgba(16, 16, 1);
+}
+.mui-slider-item a img{
+	display:block;
+	/*border-radius: 25px;*/
+}
+.mui-slider-item a{
+	width: 80%;
+	height:180px;
+	overflow: hidden;
+	margin: 5px auto;
+}
+
+#slider {
+	margin-top: 8px;
+	margin-bottom: 20px;
+}
+.th{
+	display: flex;
+	width: 100%;
+	position: relative;
+}
+.th div{
+	flex: 1;
+	display:
+}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content">
+		   	<div id="slider" class="mui-slider">
+		   	  <div class="mui-slider-group mui-slider-loop" id="lis">
+		   	    <!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+		   	    <div class="mui-slider-item mui-slider-item-duplicate">
+		   	      <a href="#" class="a3">
+		   	        <img src="http://placehold.it/400x300">
+		   	      </a>
+		   	    </div>
+		   	    <!-- 第一张 -->
+		   	    <div class="mui-slider-item">
+		   	      <a href="#" class="a1">
+		   	        <img src="http://placehold.it/400x300">
+		   	      </a>
+		   	    </div>
+		   	    <!-- 第二张 -->
+		   	    <div class="mui-slider-item">
+		   	      <a href="#"  class="a2">
+		   	        <img src="http://placehold.it/400x300">
+		   	      </a>
+		   	    </div>
+		   	    <!-- 第三张 -->
+		   	    <div class="mui-slider-item">
+		   	      <a href="#" class="a3">
+		   	        <img src="http://placehold.it/400x300">
+		   	      </a>
+		   	    </div>
+		   	    <!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+		   	    <div class="mui-slider-item mui-slider-item-duplicate">
+		   	      <a href="#" class="a1">
+		   	        <img src="http://placehold.it/400x300">
+		   	      </a>
+		   	    </div>
+		   	  </div>
+		   	  <div class="mui-slider-indicator">
+		   	    <div class="mui-indicator mui-active"></div>
+		   	    <div class="mui-indicator"></div>
+		   	    <div class="mui-indicator"></div>
+		   	  </div>
+		   	</div>
+			<h2 class="t">最近更新</h2>
+			
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				subpages:[{
+					url:'upda.html',
+					id:'upda.html',
+					styles:{
+						top:'240px'
+					}
+				}]
+			});
+
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			var fenlei = plus.webview.getWebviewById('fenlei.html');
+			var main = plus.webview.getWebviewById('main.html');
+			//轮播图运动的时间间隔
+			var slider = mui("#slider");
+			slider.slider({
+				interval: 2000
+			});
+			aj();	
+			
+			//点击跳转
+			//<div><a><img></a></div>	
+			//点击轮播进入动漫详情页面
+			mui('#lis').on('tap', 'div', function(e) {
+					var biaotiy = this.children[0].children[0].getAttribute('title');
+					var jishuya = "集数暂时无法获取";
+					var tupianya = this.children[0].children[0].getAttribute('src');
+					var lin = this.children[0].getAttribute('title');
+					mui.openWindow({
+						url: 'dongmanxiemian.html',
+						id: 'dongmanxiemian.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							bt: biaotiy,
+							jis: jishuya,
+							tup: tupianya,
+							lin: lin
+						}
+					})
+				})
+				
+		})
+		//ajax请求
+		function aj(){
+//				var c="https://api.bilibili.com/pgc/web/timeline?types=1";
+				var c="https://bangumi.bilibili.com/api/timeline_v2_global";
+				var d="https://www.bilibili.com/bangumi/play/ss";
+				mui.ajax({
+					url:c,
+					type:'GET',
+					dataType:'jsonp',
+					success:function(res){
+						var a=JSON.parse(res).result;//表示今天的番剧
+						var a1=document.getElementsByClassName('a3')[0];
+						var a2=document.getElementsByClassName('a1')[0];
+						var a3=document.getElementsByClassName('a2')[0];
+						var a4=document.getElementsByClassName('a3')[1];
+						var a5=document.getElementsByClassName('a1')[1];
+						a1.children[0].src=a[2].square_cover;//封面图片
+						a1.children[0].title=a[2].title;//封面图片的名字
+						a1.title=d+a[2].season_id;//封面图片的链接
+						
+						a2.children[0].src=a[0].square_cover;
+						a2.title=d+a[0].season_id;		
+						a2.children[0].title=a[0].title;
+						
+						a3.children[0].src=a[1].square_cover;
+						a3.title=d+a[1].season_id;		
+						a3.children[0].title=a[1].title;
+						
+						a4.children[0].src=a[2].square_cover;
+						a4.title=d+a[2].season_id;
+						a4.children[0].title=a[2].title;
+						
+						a5.children[0].src=a[0].square_cover;
+						a5.title=d+a[0].season_id;			
+						a5.children[0].title=a[0].title;
+						
+					},
+					error:function(){
+						mui.toast("请求err");
+					}
+				})
+		}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>gerenzhongxing</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			#logi {
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				overflow: hidden;
+				/*border: 1px solid black;*/
+				float: left;
+			}
+			
+			#quit {
+				background-color: white;
+				margin-top: 30px;
+			}
+			
+			.aa {
+				margin-bottom: 30px;
+				padding: 10px 0;
+				padding-left: 30px;
+				border: none;
+			}
+			
+			#biaot {
+				display: table;
+				padding-left: 30px;
+			}
+			
+			#biaot .b {
+				font-size: 18px;
+				color: rgba(16, 16, 16, 1);
+				margin-top: 10px;
+			}
+			
+			#biaot p {
+				font-weight: 500;
+				font-size: 14px;
+				margin-top: -5px;
+				color: rgba(16, 16, 16, 1);
+			}
+			
+			.touxiang {
+				height:80px;
+				width:auto;
+			}
+			#zanzhu{
+				position: absolute;
+				bottom: 10px;
+			}
+			#jiao{
+				position: absolute;
+				bottom: 18px;
+				left:80px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-table-view aa">
+			<div id="logi">
+				<img src="img/he.png" class="touxiang" />
+			</div>
+			<div id="biaot">
+				<p class="b">ID：<span id="zhang"></span></p>
+				<p>exp:<span id="jinyan"></span></p>
+				<p>等级:<span id="deng"></span></p>
+			</div>
+		</div>
+		<ul class="mui-table-view">
+			<li class="mui-table-view-cell" id="qiandao">
+				<a class="mui-navigate-right">
+					签到
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="guankan">
+				<a class="mui-navigate-right">
+					观看历史
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="woclt">
+				<a class="mui-navigate-right">
+					我的收藏
+				</a>
+			</li>
+			<li class="mui-table-view-cell" id="xinxi">
+				<a class="mui-navigate-right">
+					信息中心
+				</a>
+			</li>
+		</ul>
+		<button type="button" class="mui-btn mui-btn-white mui-btn-block" id="quit">退出登录</button>
+		<button type="button" class="mui-btn mui-btn-white mui-btn-link" id="zanzhu">赞助我们</button><span class="mui-badge mui-btn-blue" id="jiao">?</span>
+		
+		</style>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script>
+		mui.init();
+		mui.plusReady(function() {
+		
+			var self = plus.webview.currentWebview();
+			var qiandao = document.getElementById('qiandao');
+			var guankan = document.getElementById('guankan');
+			var woclt = document.getElementById('woclt');
+			var xinxi = document.getElementById('xinxi');
+			var quit = document.getElementById('quit');
+			var tou = document.getElementsByClassName('touxiang')[0];
+			//签到
+			setInterval(function(){
+				panduan();
+			},1000);
+			qiandao.addEventListener('tap', function() {
+				if(localStorage.getItem('login')=='log') {
+					var dat = new Date();
+					var year = dat.getFullYear();
+					var mouth = dat.getMonth() + 1;
+					var ad = dat.getDate();
+					plus.storage.setItem('a1', year + '^' + mouth + '^' + ad);
+					var a = plus.storage.getItem('a1');
+					var b = plus.storage.getItem('a2');
+					if(!b) {
+						localStorage.setItem("cot", "1");
+						mui.toast('签到成功！你已经签到' + localStorage.getItem("cot") + '次');
+						plus.storage.setItem('a2', a);
+					} else {
+						if(b.split('^')[0] !== a.split('^')[0]) {
+							localStorage.setItem("cot", Number(localStorage.getItem("cot")) + 1);
+							mui.toast('签到成功！你已经签到' + localStorage.getItem("cot") + '次');
+							plus.storage.setItem('a2', a);
+						} else if(b.split('^')[1] !== a.split('^')[1]) {
+							localStorage.setItem("cot", Number(localStorage.getItem("cot")) + 1);
+							mui.toast('签到成功！你已经签到' + localStorage.getItem("cot") + '次');
+							plus.storage.setItem('a2', a);
+						} else if(b.split('^')[1] == a.split('^')[1] & b.split('^')[2] !== a.split('^')[2]) {
+							localStorage.setItem("cot", Number(localStorage.getItem("cot")) + 1);
+							mui.toast('签到成功！你已经签到' + localStorage.getItem("cot") + '次');
+							plus.storage.setItem('a2', a);
+						} else {
+							mui.toast("签到失败，今天你已经签到，无法再签到");
+						}
+					}
+				} else {
+					mui.toast('你没有登录，不能签到');
+				}
+			});
+			//我的收藏
+			woclt.addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'myclt.html',
+					id: 'myclt',
+					show: {
+						autoShow: true,
+						aniShow: 'slide-in-right',
+						duration: 100,
+						bounce: 'vertical'
+					},
+					waiting: {
+						autoShow: true,
+						title: '正在加载……',
+						options: {}
+					},
+					extras: {
+
+					}
+				})
+			});
+			//观看历史
+			guankan.addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'history.html',
+					id: 'history',
+					show: {
+						autoShow: true,
+						aniShow: 'slide-in-right',
+						duration: 100,
+						bounce: 'vertical'
+					},
+					waiting: {
+						autoShow: true,
+						title: '正在加载……',
+						options: {}
+					},
+					extras: {
+
+					}
+				})
+			});
+			//信息中心
+			xinxi.addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'xingxizhongxin.html',
+					id: 'xingxizhongxin',
+					show: {
+						autoShow: true,
+						aniShow: 'slide-in-right',
+						duration: 100,
+						bounce: 'vertical'
+					},
+					waiting: {
+						autoShow: true,
+						title: '正在加载……',
+						options: {}
+					},
+					extras: {
+
+					}
+				})
+			});
+			//退出登录
+
+			quit.addEventListener('tap', function() {
+				
+				panduan();
+				if(localStorage.getItem('login')=='log'){
+					mui.toast('退出登录成功');
+					tou.src='img/he.png';
+					document.getElementById('zhang').innerHTML=='';
+					localStorage.setItem('login','delog');	
+				localStorage.setItem('zanzhuwomen','');
+					
+				}else{
+					mui.toast("你还没有登录，不能退出登录");
+				}
+			});
+			//头像点击，没有登录就进入登录页，登录了就提示你已经登录
+			tou.addEventListener('tap', function() {
+				if(!localStorage.getItem('login')||localStorage.getItem('login')=='delog') {
+					mui.openWindow({
+						url: 'login.html',
+						id: 'login.html',
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+
+						}
+					});
+//						var aw=setInterval(function(){
+//							panduan();
+//						},1000);
+
+				}else{
+					mui.toast("你已经登录了");
+			// 从相册中选择图片
+//				console.log("从相册中选择图片:");
+//					    plus.gallery.pick( function(path){
+////					    	mui.toast(path);
+//							tou.src=path;
+//							clearInterval(a);
+////							plus.io.convertLocalFileSystemURL(path)
+//					    }, function ( e ) {
+//					    	console.log( "取消选择图片" );
+//					    }, {filter:"image"} );
+					
+					}
+			});
+			//点击问号帮助
+			document.getElementById('jiao').addEventListener('tap',function(){
+				localStorage.setItem('zanzhuwomen','a');
+				var aasd=plus.webview.create('help.html','help.html',{
+							top:'0px',
+							bottom:'0px'
+						});
+						aasd.show();
+			});
+			//赞助我们
+				document.getElementById('zanzhu').addEventListener('tap',function(){
+					if(localStorage.getItem('zanzhuwomen')=='a'&&localStorage.getItem('zanzhuwomen')){
+						var a=plus.webview.create('zhif.html','zhif.html',{
+							top:'0px',
+							bottom:'0px'
+						});
+						a.show();
+					}else{
+						mui.toast('请点击旁边的问号，了解怎么使用');
+					}
+//					plus.barcode.scan('img/1567662324160.jpg',function(type,result){
+//						console.log(result);
+//						plus.runtime.openURL(result);
+//						var a=plus.webview.create('zhif.html','zhif.html',{
+//							top:'0px',
+//							bottom:'0px'
+//						});
+//						a.show();
+//						mui.openWindow({
+//							url:'zhif.html',
+//							id:'zhif.html',
+//							styles: {},
+//							show: {
+//								autoShow: true,
+//								aniShow: 'slide-in-right',
+//								duration: 100,
+//								bounce: 'vertical'
+//								}
+//						})
+						//'HTTPS://QR.ALIPAY.COM/FKX01217VEYDTVGYYA9TA0';//支付宝的
+//						window.location.href='wxp://f2f0KJIOYeCSvAVT_2gfIXLfQIBbEZXi3SYB';//微信的 尚未完善				
+//					},function(error){
+//						mui.toast(error);
+//					})
+				})
+				
+		})
+
+		function panduan(){
+			if(localStorage.getItem('login')=='log'){
+				document.getElementById('zhang').innerHTML=localStorage.getItem('log').split(';')[0];
+				document.getElementsByClassName('touxiang')[0].src='img/boy.png';
+				if(localStorage.getItem('cot')*5<40){
+					document.getElementById('deng').innerHTML=1;	
+				}else if(localStorage.getItem('cot')*5>=40&&localStorage.getItem('cot')*5<80){
+					document.getElementById('deng').innerHTML=2;
+				}else if(localStorage.getItem('cot')*5>=80&&localStorage.getItem('cot')*5<120){
+					document.getElementById('deng').innerHTML=3;		
+				}else if(localStorage.getItem('cot')*5>=120&&localStorage.getItem('cot')*5<160){
+					document.getElementById('deng').innerHTML=4;		
+				}else if(localStorage.getItem('cot')*5>=160&&localStorage.getItem('cot')*5<200){
+					document.getElementById('deng').innerHTML=5;		
+				}else{
+					document.getElementById('deng').innerHTML=6;						
+				}
+				document.getElementById('jinyan').innerHTML=localStorage.getItem('cot')*5;
+				
+			}else{
+				document.getElementById('zhang').innerHTML="";
+				localStorage.setItem('login','delog');
+				document.getElementsByClassName('touxiang')[0].src='img/he.png';
+				document.getElementById('deng').innerHTML='';
+				document.getElementById('jinyan').innerHTML='';
+			}
+	
+		}
+	</script>
+
+</html>

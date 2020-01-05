@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/jquery-3.4.0.js"></script>
+		<style type="text/css">
+			.t {
+				margin-top: 10px;
+			}
+			
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			.mui-table-view{
+				padding-top: 200px;
+			}
+			.mui-table-view .wa input{
+				width:60%;
+				height:30px;
+				outline: none;
+				border: 1px solid pink;
+				display:block;
+				margin: 5px auto;
+				z-index: 66;
+			}
+			 .wb{
+				display:block;
+				text-align: center;
+				margin: 10px auto;
+				margin-top: -20px;
+			}
+			.wc{
+				margin-bottom: 60px;
+			}
+			.ft{
+				margin: 5px auto;
+				display: table;
+				z-index: 1;
+			}
+
+			.tupi{
+				position:absolute;
+				display: table;
+				top:50px;
+				right:0px;			
+			}
+			.ma{
+				display: inline-block
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+		</header>
+		<div class="mui-content">
+			<div class="mui-table-view">	
+				<img src="img/22.png" class="tupi" />	
+				<div class="mui-input-row wa">
+					<input type="text" class="mui-input-clear" placeholder="输入账号" id="zh">
+				</div>
+				<div class="mui-input-row wa">
+					<input type="password" class="mui-input-clear" placeholder="输入密码" id="mima">
+				</div>
+				<div class="mui-input-row wa wc">
+					<input type="password" class="mui-input-clear" placeholder="再次输入密码" id="mimay">
+				</div>
+				<div class="wb">	
+					<span>
+						<button type="button" class="ma">确认注册</button>
+					</span>
+					
+				</div>
+				<img src="img/21.png" class="ft" />
+				
+			</div>
+
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				//返回
+				var self=plus.webview.currentWebview();
+				self.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {}, function() {
+					mui.back();
+				});
+				//注册
+				var zh=document.getElementById('zh');
+				var mima=document.getElementById('mima');
+				var mimay=document.getElementById('mimay');
+				var ma=document.getElementsByClassName('ma')[0];
+				ma.addEventListener('tap',function(){
+					if($.trim(zh.value)==""){
+						mui.alert("账号不能为空")
+					}else if(mima.value!==mimay.value){
+						mui.alert("两次输入密码不一样")
+					}else if($.trim(mima.value)==""){
+						mui.alert("密码不能为空")
+					}else{
+				mui.confirm("注册成功" + '你的用户名是' + zh.value + '你的密码是' + mima.value);
+					localStorage.setItem('log',zh.value+';'+mima.value);
+					zh.value='';
+					mima.value='';
+					mimay.value='';
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

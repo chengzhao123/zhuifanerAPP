@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="js/jquery-3.4.0.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.t {
+				margin-top: 10px;
+			}
+			
+			#b {
+				display: block;
+			}
+			
+			#c {
+				background-color: white;
+				border: 1px solid pink;
+				outline: none;
+				width:70%;
+				border-radius: 15px;
+				height: 40px;
+			}
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+				height: 110px;
+			}
+			.mui-content{
+				margin-top: 60px;
+			}
+			#bit{
+				margin-left: 20px;
+				display: table;
+				
+			}
+			#ss{
+				margin-top: -5px;
+				border-radius: 8px;
+				width: 60px;
+				height: 35px;
+				line-height: 25px;
+			}
+			.ig{
+				width: 50px;
+			}
+			.zi,.mui-ellipsis{
+				font-size: 14px;
+				color: black;
+				width: 250px;
+				word-wrap:break-word;  
+    			word-break:break-all;
+ 
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+			<div class=" mui-search search" id="b">
+				<input type="text" class="mui-input-clear" placeholder="输入你想知道的番剧" id="c">
+				<button type="button" class="mui-btn mui-btn-mini" id="ss">搜索</button>
+			</div>
+		</header>
+		<div class="mui-content" id="lisa">
+		    <div class="mui-table-view">
+		        <!--<div class="mui-table-view-cell mui-media">
+		                <img class=" mui-pull-left" src="img/10.png" style="height: 50px;">
+		                <div class="mui-media-body" id="bit">
+				            <p class="zi">幸福</p>     
+		               		  <p class="mui-ellipsis">全12话</p>  
+		                </div>
+		        </div>		      -->
+		    </div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				var self = plus.webview.currentWebview();
+				self.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {}, function() {
+					mui.back();
+				});
+				var ss=document.getElementById('ss');//搜索按钮
+
+				ss.addEventListener('tap',function(){
+				var c=document.getElementById('c');//搜索框的内容
+				document.getElementsByClassName('mui-table-view')[0].innerHTML='';
+				
+					if($.trim(c.value)==''){
+						mui.toast("输入内容不能为空");
+
+					}else{
+						sousuo();
+						//内容清空
+						c.value='';
+					}
+				});
+				
+				//点击进入动漫页面
+				mui('.mui-table-view').on('tap','.mui-table-view-cell',function(){
+//					mui.toast(this.innerHTML)
+					var biaotiy = this.children[1].children[0].innerHTML;
+					var jishuya =this.children[1].children[1].innerHTML;
+					var tupianya = this.children[0].getAttribute('src');
+					var lin = this.getAttribute('title');
+					mui.openWindow({
+						url: 'dongmanxiemian.html',
+						id: 'dongmanxiemian.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							bt: biaotiy,
+							jis: jishuya,
+							tup: tupianya,
+							lin: lin
+						}
+					});
+				})
+			});
+			var a=[
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2019%2C2020)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2018%2C2019)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2017%2C2018)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2016%2C2017)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2015%2C2016)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2010%2C2015)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2005%2C2010)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2000%2C2005)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1990%2C2000)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1",
+				"https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1980%2C1990)&style_id=-1&order=3&st=1&sort=0&page=1&season_type=1&pagesize=20&type=1"
+				];
+			function sousuo(){
+				var c=document.getElementById('c');//搜索框的内容
+				var d=$.trim(c.value);//去掉空格后的内容
+				
+				for(var i=1;i<21;i++){
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=-1&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2019%2C2020)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2018%2C2019)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2017%2C2018)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2016%2C2017)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2015%2C2016)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2010%2C2015)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2005%2C2010)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B2000%2C2005)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1990%2C2000)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+						a.push("https://api.bilibili.com/pgc/season/index/result?season_version=-1&area=-1&is_finish=-1&copyright=-1&season_status=-1&season_month=-1&year=%5B1980%2C1990)&style_id=-1&order=3&st=1&sort=0&page="+i+"&season_type=1&pagesize=20&type=1");
+				}
+				aj();
+			}
+			function aj(){
+
+				var c=document.getElementById('c');//搜索框的内容
+				var d=$.trim(c.value);//去掉空格后的内容
+				for(var k=0;k<a.length;k++){
+						mui.ajax({
+							url:a[k],
+							type: 'GET',
+							dataType: 'jsonp',
+							data: {},
+							timeout: 2000,
+							success: function(res) {
+//								mui.toast(a[49]);
+							var da = JSON.parse(res).data.list;
+								for(var j=0;j<da.length-1;j++){
+										if(da[j].title==d||da[j].title[0]==d[0]){
+											var pa=document.createElement('div');
+											pa.className='mui-table-view-cell mui-media';
+											pa.title=da[j].link;
+											var ig=document.createElement('img');
+											ig.className=' mui-pull-left ig';
+											ig.src=da[j].cover;
+											var pb=document.createElement('div');
+											pb.className='mui-media-body';
+											pb.id='bit';
+//											pb.innerHTML=da[j].title;
+											var ap=document.createElement('p');
+											ap.className='zi';
+											ap.innerHTML=da[j].title;
+											var bp=document.createElement('p');
+											bp.className='mui-ellipsis';
+											bp.innerHTML=da[j].index_show;
+											pb.appendChild(ap);
+											pb.appendChild(bp);
+											pa.appendChild(ig);
+											pa.appendChild(pb);
+											document.getElementsByClassName('mui-table-view')[0].appendChild(pa);
+										}				
+								}					
+							},
+							error: function() {
+								if(document.getElementsByClassName('mui-table-view')[0].innerHTML==''){
+										document.getElementsByClassName('mui-table-view')[0].innerHTML="无"
+								}
+							}
+						});
+//						mui.toast(k)
+				}
+			}
+		</script>
+	</body>
+
+</html>

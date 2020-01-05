@@ -1,0 +1,101 @@
+{
+	"index.html": {
+		"refer": [
+			"main.html",
+			"guide.html",
+			"icom.html"
+		]
+	},
+	"guide.html": {
+		"refer": [
+			"main.html"
+		]
+	},
+	"main.html": {
+		"resources": [
+			"fenlei.html",
+			"gerenzhongxing.html",
+			"zhuye.html"
+		],
+		"refer": [
+			"fenlei.html",
+			"zhuye.html",
+			"gerenzhongxing.html",
+			"sear.html"
+		]
+	},
+	"fenlei.html": {
+		"refer": [
+			"new.html"
+		]
+	},
+	"new.html": {
+		"refer": [
+			"dongmanxiemian.html"
+		]
+	},
+	"gerenzhongxing.html": {
+		"refer": [
+			"xingxizhongxin.html",
+			"history.html",
+			"myclt.html",
+			"login.html",
+			"zhif.html",
+			"help.html"
+		],
+		"resources": [
+			"img/user-photo.png"
+		]
+	},
+	"history.html": {
+		"resources": [
+			"img/��.png"
+		]
+	},
+	"icom.html": {
+		"refer": [
+			"main.html"
+		]
+	},
+	"login.html": {
+		"refer": [
+			"zhece.html"
+		]
+	},
+	"zhuye.html": {
+		"refer": [
+			"dongmanxiemian.html",
+			"upda.html"
+		],
+		"resources": [
+			"upda.html",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"upda.html": {
+		"refer": [
+			"dongmanxiemian.html"
+		]
+	},
+	"sear.html": {
+		"refer": [
+			"dongmanxiemian.html"
+		]
+	},
+	"zhif.html": {
+		"refer": [
+			"gerenzhongxing.html"
+		]
+	},
+	"myclt.html": {
+		"refer": [
+			"dongmanxiemian.html"
+		]
+	},
+	"dongmanxiemian.html": {
+		"refer": [
+			"bf.html"
+		]
+	}
+}

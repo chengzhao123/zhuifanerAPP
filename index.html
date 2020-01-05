@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>index</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	
+	</head>
+
+	<body>
+			<script type="text/javascript" charset="utf-8">
+			mui.init({
+				preloadPages:[{
+					url:"icom.html",
+					id:"icom.html"
+				}]
+			});
+			mui.plusReady(function() {			
+				//读取向导页阅读状态
+				var launchFlag =plus.storage.getItem("launch");
+//				console.log(launchFlag);
+				if(launchFlag){
+					//打开首页
+					mui.openWindow({
+						url:"icom.html",
+						id:"icom.html"
+					});
+				}
+				else{
+				   //打开向导页
+				   mui.openWindow({
+				   	  url:"icom.html",
+				   	  id:"icom.html"
+				   })
+				   plus.storage.setItem('launch','q')
+				}
+			});
+		</script>
+	</body>
+
+</html>

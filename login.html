@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="js/jquery-3.4.0.js" ></script>
+		<style type="text/css">
+			.t {
+				margin-top: 10px;
+			}
+			
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			.mui-table-view{
+				padding-top: 200px;
+			}
+			.mui-table-view .wa input{
+				width:60%;
+				height:30px;
+				outline: none;
+				border: 1px solid pink;
+				display:block;
+				margin: 5px auto;
+				z-index: 66;
+			}
+			 .wb{
+				display:block;
+				text-align: center;
+				margin: 10px auto;
+				margin-top: -20px;
+			}
+			.wc{
+				margin-bottom: 60px;
+			}
+			.ft{
+				margin: 5px auto;
+				display: table;
+				z-index: 1;
+			}
+
+			.tupi{
+				position:absolute;
+				display: table;
+				top:50px;
+				right:0px;			
+			}
+			.ma{
+				display: inline-block
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+		</header>
+		<div class="mui-content">
+			<div class="mui-table-view">	
+				<img src="img/22.png" class="tupi" />	
+				<div class="mui-input-row wa">
+					<input type="text" class="mui-input-clear" placeholder="登录账号" id="z">
+				</div>
+				<div class="mui-input-row wa wc">
+					<input type="password" class="mui-input-clear" placeholder="登录密码" id="m">
+				</div>
+				<div class="wb">	
+					<span>
+						<button type="button" class="mb">登录</button>
+					</span>		
+					<span>
+						<button type="button" class="ma">注册</button>
+					</span>
+					
+				</div>
+				<img src="img/21.png" class="ft" />
+				
+			</div>
+
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				preloadPages:[{
+					url:'zhece.html',
+					id:'zhece.html'
+				}]
+			});
+			mui.plusReady(function() {
+				//返回
+				var self=plus.webview.currentWebview();
+				self.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {}, function() {
+					mui.back()
+				})
+				//进入注册页面
+				var ma=document.getElementsByClassName('ma')[0];//注册
+				var mb=document.getElementsByClassName('mb')[0];//登录
+				ma.addEventListener('tap',function(){
+					mui.openWindow({
+						url:'zhece.html',
+						id:'zhece.html',
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							
+						}
+					})
+				});
+				//点击登录
+				mb.addEventListener('tap',function(){
+					var z=document.getElementById('z');
+					var m=document.getElementById('m');
+					var zi=$.trim(z.value);
+					var mi=$.trim(m.value);
+					if(zi==''){
+						mui.alert('账号不能为空');
+						z.value='';
+					}else if(mi==''){
+						mui.alert("密码不能为空");
+					}else{
+						if(!localStorage.getItem('log')){
+							mui.toast('账号密码不存在');
+						}else if(z.value==localStorage.getItem('log').split(';')[0]&&m.value==localStorage.getItem('log').split(';')[1]){
+							mui.toast('登录成功');
+							localStorage.setItem('login','log');
+							mui.back();
+						}else{
+							mui.alert("账号密码错误");
+						}
+						
+					};
+					
+				})
+			})
+		</script>
+	</body>
+
+</html>

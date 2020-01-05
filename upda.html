@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.bot {
+				height: auto;
+				width: 100%;
+				position: relative;
+				padding-bottom: 20px;
+			}
+			.bot_t {
+				margin-top: 20px;
+				text-align: center;
+			}
+			.bot_b {
+				margin-top: 20px;
+				text-align: center;
+				margin-bottom: 10px;
+			}
+			.mui-table-view img{
+				height:60px;
+			}
+			.mui-table-view p{
+				font-size: 14px;
+				color:rgba(16,16,1);
+				text-align: center;
+				word-wrap: break-word;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div class="mui-table-view mui-table-view-chevron" id="upd">
+					<div class="mui-table" id="mt">
+					</div>
+					<div class="bot">
+						<div class="bot_t">
+							<p>更多精彩，等你发现哦</p>
+						</div>
+						<div class="bot_b">
+							<p>为保护版权，本APP只提供正版观看地址链接</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						style: 'circle',
+						color: '#FFB6C1', //可选，默认“#2BD009” 下拉刷新控件颜色
+						callback: function() {
+							document.getElementById('mt').innerHTML="";
+							aja();
+						}
+					},
+					up:{
+						auto:false,
+						show:true,
+						contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+               			contentnomore:'没 有 更 多 数 据 了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+           				callback:function(){//必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                			shangla();	
+          				}
+					}
+				}
+			});
+			mui.plusReady(function() {
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				aja();
+				mui('#upd').on('tap','.mui-table-view div',function(e){
+					var biaotiy = this.children[1].children[0].innerHTML;
+					var jishuya = "集数暂时无法获取";
+					var tupianya = this.children[0].getAttribute('src');
+					var lin = this.children[1].getAttribute('title');
+					mui.openWindow({
+						url: 'dongmanxiemian.html',
+						id: 'dongmanxiemian.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							bt: biaotiy,
+							jis: jishuya,
+							tup: tupianya,
+							lin: lin
+						}
+					})
+				})
+			})
+			//ajax请求
+			var k=5;
+		function aja(){
+				var g="https://bangumi.bilibili.com/api/timeline_v2_global";
+				var d="https://www.bilibili.com/bangumi/play/ss";
+				mui.ajax({
+					url:g,
+					type:'GET',
+					dataType:'jsonp',
+					success:function(res){
+						document.getElementById('mt').innerHTML="";
+						var a=JSON.parse(res).result;//表示今天的番剧
+						var d="https://www.bilibili.com/bangumi/play/ss";
+						for(var i=0;i<5;i++){	
+							var table = document.createElement('div');
+							table.className = 'mui-table-view-cell';
+							//图片封面
+							var aw = document.createElement('img');
+							aw.src =a[i].square_cover;
+							aw.className = 'mui-pull-left';
+							table.appendChild(aw);
+							//标题和集数的大框架
+							var medi = document.createElement('div');
+							medi.className = 'mui-media-body';
+							medi.title=d+a[i].season_id;
+							//标题
+							var pb = document.createElement('p');
+							pb.className = 'zi';
+							pb.innerHTML = a[i].title;
+							//集数
+							medi.appendChild(pb);
+							table.appendChild(medi)
+								document.getElementById('mt').appendChild(table);
+						}
+						g="";
+						k=5;
+								mui.toast("加载成功");		
+						setTimeout(function() {
+								mui("#pullrefresh").pullRefresh().endPulldownToRefresh(true);
+							}, 1000)
+					},
+					error:function(){
+						mui.toast("请求err");
+					}
+				})
+		}
+		function shangla(){
+			k+=5;
+			var c="https://bangumi.bilibili.com/api/timeline_v2_global";
+				var d="https://www.bilibili.com/bangumi/play/ss";
+
+				mui.ajax({
+					url:c,
+					type:'GET',
+					dataType:'jsonp',
+					success:function(res){
+						document.getElementById('mt').innerHTML="";
+						var a=JSON.parse(res).result;//表示今天的番剧
+						var d="https://www.bilibili.com/bangumi/play/ss";
+						for(var i=0;i<k;i++){	
+							var table = document.createElement('div');
+							table.className = 'mui-table-view-cell';
+							//图片封面
+							var aw = document.createElement('img');
+							aw.src =a[i].square_cover;
+							aw.className = 'aaa mui-pull-left';
+							table.appendChild(aw);
+							//标题和集数的大框架 链接
+							var medi = document.createElement('div');
+							medi.className = 'mui-media-body';
+							medi.title=d+a[i].season_id;
+							//标题
+							var pb = document.createElement('p');
+							pb.className = 'zi';
+							pb.innerHTML = a[i].title;
+							//集数
+							medi.appendChild(pb);
+							table.appendChild(medi)
+								document.getElementById('mt').appendChild(table);
+						}
+								mui.toast("加载成功");
+						setTimeout(function() {
+							var w=false;
+							if(k>a.length){
+								w=true;
+
+							}
+							mui("#pullrefresh").pullRefresh().endPullupToRefresh(w);
+						}, 1500)
+					},
+					error:function(){
+						mui.toast("请求err");
+					}
+				})
+		}
+		</script>
+	</body>
+
+</html>

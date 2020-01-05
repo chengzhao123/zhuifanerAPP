@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			*{
+				background-color: white;
+			}
+			.aa img {
+				height: 243px;
+				margin: 0 auto;
+				display: table;
+			}
+			
+			.d {
+				display: inline;
+				background-color: pink;
+				color: rgba(16, 16, 16, 1);
+				font-size: 18px;
+				margin-left: 14px;
+				margin-top: 18px;
+			}
+			.p1{
+				text-align: center;
+				font-size: 18px;
+				color: rgba(16,16,16,1);
+				margin-top: 10px;
+			}
+			.p2{
+				padding: 10px 0 0 10px;
+				font-size: 18px;
+				color: rgba(16,16,16,1);
+			}
+			.p3{
+				font-size: 14px;
+				text-align: center;
+				color:rgba(16,16,16,1);
+				padding-bottom: 20px;
+			}
+			.t{
+				margin-top: 10px;
+			}
+			
+			* {
+				background-color: white;
+			}
+			
+			html body, .mui-content {
+				background-color: white;
+			}
+			
+			h1 {
+				font-size: 20px;
+				font-weight: bolder;
+				line-height: 35px;
+				top: 10px;
+				position: absolute;
+				display: block;
+				color: hotpink;
+			}
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			.f{
+				position: absolute;
+				margin-top: 10px;
+				right: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">			
+			<img src="img/logo.png" height="45px" class="t">	
+			<img src="img/whit.png" height="45px" class="f">
+
+		</header>
+		<div class="mui-content">
+			<div class="mui-table-view aa">
+				<img src="img/10.png" / id="tu">
+				<hr />
+				<div class="d">
+					小玲家的龙女仆
+				</div>
+				<p class="p1">12集全</p>
+				<p class="p2">观看链接</p>
+				<p class="p3" id="lian"><span>点击进入</span></p>
+				<p class="p3">所提供链接均为正版观看链接</p>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				swipeBack:true, //启用右滑关闭功能,右滑有关闭最常用，所有有配置。
+				gestureConfig: {
+					swipe: true //监听滑动事件，默认是不监听的。
+				}
+			})
+			mui.plusReady(function(){
+				setInterval(function(){
+				xian();
+				},300)
+
+				var self=plus.webview.currentWebview();
+				var d=document.getElementsByClassName('d')[0];
+				var p1=document.getElementsByClassName('p1')[0];
+				var lian=document.getElementById('lian');
+				var tu=document.getElementById('tu');
+				tu.src=self.tup;
+				lian.children[0].innerHTML=self.lin;
+			
+				p1.innerHTML=self.jis;
+				d.innerHTML=self.bt;
+				self.drag({
+					direction:'right',
+					moveMode:'followFinger'
+				},{	
+				},function(){
+					mui.back()
+				})
+				//点击链接
+				
+			
+				lian.addEventListener('tap',function(){
+					mui.openWindow({
+						url:'bf.html',
+						id:'bf.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							lin: self.lin
+						}
+					})
+					//判断你登录没有						
+//						lian.children[0].href=self.lin;
+						var dat=new Date();
+						var m=dat.getMonth()+1;
+						var r=dat.getDate();
+						if(plus.storage.getItem('his')){
+						var bdad = JSON.parse(plus.storage.getItem('his'));
+							bdad.unshift({
+								ti:m,//月
+								mh:r,//日
+								title:self.bt,//标题
+								lin:self.lin,//链接
+								jis:self.jis,//集数
+								tup:self.tup//图片
+							});		
+							plus.storage.setItem('his', JSON.stringify(bdad));	
+						}else{	
+							var shouc = [];			
+							shouc.push({
+								ti:m,//月
+								mh:r,//日
+								title:self.bt,//标题
+								lin:self.lin,//链接
+								jis:self.jis,//集数
+								tup:self.tup//图片
+							});
+							plus.storage.setItem('his', JSON.stringify(shouc));						
+						}			
+				});
+				//点击收藏和取消收藏
+				document.getElementsByClassName('f')[0].addEventListener('tap',function(){
+					caba();
+				});
+				function caba(){
+				var self=plus.webview.currentWebview();
+				var f=document.getElementsByClassName('f')[0];
+				if(localStorage.getItem('la')&&localStorage.getItem('la')!=='[]'){
+						//转成json格式
+						var ca = JSON.parse(localStorage.getItem('la'));
+						//for循环判断你这个收藏了没有，如果你收藏了就取消收藏，否则就收藏
+						for(var i=0;i<ca.length;i++){
+							if(document.getElementById('lian').children[0].innerHTML==ca[i].lin){
+								ca.splice(i,1);
+								mui.toast('取消收藏成功');
+								f.src='img/whit.png';
+							localStorage.setItem('la',JSON.stringify(ca));
+								
+							}else{
+								ca.unshift({
+									title:self.bt,//标题
+									lin:self.lin,//链接
+									jis:self.jis,//集数
+									tup:self.tup//图片	
+								});
+								mui.toast('收藏成功');
+								f.src='img/red.png';
+							localStorage.setItem('la',JSON.stringify(ca));
+								
+							}
+
+							break;
+						}
+					}else{
+						mui.toast('收藏成功');
+						f.src='img/red.png';
+						var clt=[];
+						clt.push({
+							title:self.bt,//标题
+							lin:self.lin,//链接
+							jis:self.jis,//集数
+							tup:self.tup//图片		
+						});
+						//把喜欢的加入到clt这个键中
+						localStorage.setItem('la', JSON.stringify(clt));		
+					}
+//					mui.toast(localStorage.getItem('la'))
+			}
+				//进入动漫页面执行
+				function xian(){
+					var self=plus.webview.currentWebview();
+					var f=document.getElementsByClassName('f')[0];
+					var lian=document.getElementById('lian');
+					if(!localStorage.getItem('la')){
+						f.src='img/whit.png';
+					}else{
+						var ca = JSON.parse(localStorage.getItem('la'));			
+						for(var i=0;i<ca.length;i++){
+							if(lian.children[0].innerHTML==ca[i].lin){
+								f.src='img/red.png';	
+							}
+						}
+					}
+				}
+//					var abc=plus.webview.getWebviewById(self.lin);
+//				abc.drag({
+//					direction:'right',
+//					moveMode:'followFinger'
+//				},{
+//					
+//				},function(){
+//					mui.back()
+//				})
+			})
+			
+		</script>
+	</body>
+
+</html>

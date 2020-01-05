@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.t {
+				margin-top: 10px;
+			}
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			
+			html body .mui-content {
+				overflow: hidden;
+				background-color: white;
+			}
+
+			.t1 {
+				height: 80px;
+			}
+			
+			.kuai {
+				width: 100%;
+				height: 50px;
+				line-height: 50px;
+				font-size: 16px;
+				color: rgba(16, 16, 16, 1);
+				padding-left: 20px;
+				margin-top: 20px;
+				margin-bottom: 10px;
+				background-color: white;
+			}
+			
+			.weiz {
+				height: 30px;
+				vertical-align: middle;
+			}
+			
+			.ls{
+				position: absolute;
+				top:20px;
+				left:125px;
+				width: 100%;
+			}
+			.zi,.mui-ellipsis{
+				font-size: 14px;
+				color: black;
+				width: 250px;
+				word-wrap:break-word;  
+    			word-break:break-all;
+ 
+			}
+			.ts{
+				margin-left: 55px;
+				height: 50px;
+			}
+			.time{
+				position: absolute;
+				margin-top: 20px;
+			}
+			#kong{
+				margin-right: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+		</header>
+		<div class="mui-content">
+			<div class='kuai'>
+				<img src="img/z.png" class="weiz" /> 历史
+				<button class="mui-btn mui-pull-right" id="kong">清空历史</button>
+			</div>
+			<div class="mui-table-view" id="lisa">
+			    <!--<div class="mui-table-view-cell mui-media">
+				    	<div class="time"><span id="mt">8</span>月<span id="da">3</span>日</div>
+				        <img class="ts" src="img/10.png" >
+				        <div class="mui-media-body ls">
+				            <p class="zi">在下坂本</p>
+				            <p class="mui-ellipsis">全12话</p>     
+				        </div>
+			   		</div>-->		    
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				var self=plus.webview.currentWebview();
+				self.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {}, function() {
+					mui.back();
+				});
+				show();
+				//点击历史记录进入动漫页面
+				mui('#lisa').on('tap','.mui-table-view-cell',function(){
+//					mui.toast(this.innerHTML)
+					var biaotiy = this.children[2].children[0].innerHTML;
+					var jishuya =this.children[2].children[1].innerHTML;
+					var tupianya = this.children[1].getAttribute('src');
+					var lin = this.getAttribute('title');
+					mui.openWindow({
+						url: 'dongmanxiemian.html',
+						id: 'dongmanxiemian.html',
+						styles: {},
+						show: {
+							autoShow: true,
+							aniShow: 'slide-in-right',
+							duration: 100,
+							bounce: 'vertical'
+						},
+						waiting: {
+							autoShow: true,
+							title: '正在加载……',
+							options: {}
+						},
+						extras: {
+							bt: biaotiy,
+							jis: jishuya,
+							tup: tupianya,
+							lin: lin
+						}
+					});
+				})
+				//清空历史
+				
+				document.getElementById('kong').addEventListener('tap',function(){
+					plus.storage.setItem('his','');
+					document.getElementsByClassName('mui-table-view')[0].innerHTML='暂无历史记录';
+				})
+			})
+			//历史记录
+			function show(){
+					
+				if(!plus.storage.getItem('his')){
+					document.getElementsByClassName('mui-table-view')[0].innerHTML='暂无历史记录';
+				}else{
+					document.getElementsByClassName('mui-table-view')[0].innerHTML=null;	
+					var lists= JSON.parse(plus.storage.getItem('his'));
+					for(var i=0;i<lists.length;i++){
+						var pd=document.createElement('div');
+						pd.className='mui-table-view-cell mui-media';
+						var tim=document.createElement('div');
+						tim.className='time';
+						var sf=document.createElement('span');
+						sf.id='mt';
+						sf.innerHTML=lists[i].ti+'月';//月
+						var sc=document.createElement('span');
+						sc.id='da';
+						sc.innerHTML=lists[i].mh+'日';//日
+						tim.appendChild(sf);
+						tim.appendChild(sc);
+						pd.appendChild(tim);
+						var ig=document.createElement('img');
+						ig.className='ts';
+						ig.src=lists[i].tup;
+						pd.appendChild(ig);
+						var sd=document.createElement('div');
+						sd.className='mui-media-body ls';
+						var pf=document.createElement('p');
+						pf.className='zi';
+						pf.innerHTML=lists[i].title;
+						var pw=document.createElement('p');
+						pw.className='mui-ellipsis';
+						pw.innerHTML=lists[i].jis;
+						sd.appendChild(pf);
+						sd.appendChild(pw);
+						pd.appendChild(sd);
+						pd.title=lists[i].lin;
+						document.getElementsByClassName('mui-table-view')[0].appendChild(pd);
+					}
+				}
+			}
+		</script>
+	</body>
+
+</html>

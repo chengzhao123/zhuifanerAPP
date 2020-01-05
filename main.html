@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>main</title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript">
+			window.onload = function() {
+				mui('.mui-scroll-wrapper').scroll({
+					deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				});
+			}
+		</script>
+		<style type="text/css">
+			* {
+				background-color: white;
+			}
+			
+			h1 {
+				font-size: 20px;
+				font-weight: bolder;
+				line-height: 35px;
+				top: 10px;
+				position: absolute;
+				display: block;
+				color: hotpink;
+			}
+			
+			.mui-bar,
+			.mui-bar-nav {
+				background-color: white;
+				box-shadow: 0 0 0;
+			}
+			
+			.search {
+				position: absolute;
+				top: 12px;
+				right: 10px;
+				width: 164px;
+				display: none;
+			}
+			
+			.mui-segmented-control {
+				padding-top: 20px;
+				background-color: white;
+				font-size: 18px;
+				color: rgba(16, 16, 16, 1)
+			}
+			
+			.t {
+				margin-top: 10px;
+			}
+			
+			.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+				border-bottom: 2px solid hotpink;
+				color: pink;
+			}
+			
+			#b {
+				display: block;
+				border: 1px solid pink;
+				/*width: 60px;*/
+				height: 30px;
+				border-radius: 40px;
+				margin-right: 10px;
+			}
+			#b p{
+				font-size: 14px;
+				margin-top: 5px;
+				text-align: center;
+			}
+			/*#c {
+				background-color: white;
+				border: 1px solid pink;
+				outline: none;
+			}*/
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<img src="img/logo.png" height="45px" class="t">
+			<div class=" mui-search search" id="b">
+				<p>搜索</p>
+			<!--	<input type="search" class="mui-input-clear" placeholder="搜索" id="c">-->
+			</div>
+		</header>
+		<div class="mui-content">
+			<div class=" mui-segmented-control mui-segmented-control-inverted ad">
+				<a class="mui-control-item mui-active" href="zhuye.html">主页</a>
+				<a class="mui-control-item" href="fenlei.html">番剧分类</a>
+				<a class="mui-control-item" href="gerenzhongxing.html">个人中心</a>
+			</div>
+		</div>
+
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: false, //启用右滑关闭功能,右滑有关闭最常用，所有有配置。
+				gestureConfig: {
+					swipe: true //监听滑动事件，默认是不监听的。
+				}
+			});
+			//阻尼系数
+			mui('.mui-scroll-wrapper').scroll({
+				bounce: false,
+				indicators: true //是否显示滚动条
+			});
+			mui('.mui-scroll-wrapper').scroll();
+
+			mui.plusReady(function() {
+				mui.back = function() {  
+					var btn = ["确定", "取消"];
+					mui.confirm('确认关闭当前窗口？', '番一番', btn, function(e) {
+						if(e.index == 0) { 
+							plus.runtime.quit();
+						}
+					});
+				}
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+				var substyle = {
+					top: '130px',
+					bottom: '0px'
+				}
+				var subpages = ['zhuye.html', 'fenlei.html', 'gerenzhongxing.html']
+
+				var self = plus.webview.currentWebview();
+				for(var i = 0; i < subpages.length; i++) {
+					var sub = plus.webview.create(subpages[i], subpages[i], substyle);
+					if(i > 0) {
+						sub.hide("none");
+					}
+					self.append(sub);
+				}
+				var activeTab = subpages[0];
+						document.getElementById('b').style.display = 'none'			
+				mui('.ad').on('tap', 'a', function() {
+					var targetTab = this.getAttribute('href');
+					if(targetTab == 'fenlei.html') {
+						document.getElementById('b').style.display = 'block'
+					} else {
+						document.getElementById('b').style.display = 'none'
+					}
+					if(activeTab == targetTab) {
+						return;
+					}
+
+					plus.webview.show(targetTab, 'fade-in');
+					//隐藏当前;
+					plus.webview.hide(activeTab);
+					//更改当前活跃的选项卡
+					activeTab = targetTab;
+				})
+				//搜索
+				document.getElementById('b').addEventListener('tap',function(){
+					mui.openWindow({
+						url:'sear.html',
+						id:'sear.html'
+					})
+				})
+			})
+		</script>
+	</body>
+
+	</html
